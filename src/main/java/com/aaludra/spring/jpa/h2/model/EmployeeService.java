@@ -30,12 +30,22 @@ public class EmployeeService {
 		Employee emp=empRep.findById(updateRequest.getEmpId()).get();
 		if (updateRequest.getEmpName() != null && !updateRequest.getEmpName().isEmpty())
 		{
-			updateRequest.setEmpName(updateRequest.getEmpName());
+			emp.setEmpName(updateRequest.getEmpName());
 
 		}
 		emp = empRep.save(emp);
 
 		return emp;
+	}
+
+	public String deleteEmployee(long id) {
+		empRep.deleteById(id);
+		return "Employee has been deleted successfully";
+	}
+
+	public List<Employee> getByIdEmployee(long id) {
+		return empRep.findByempId(id);
+
 	}
 
 }
