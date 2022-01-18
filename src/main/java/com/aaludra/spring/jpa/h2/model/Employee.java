@@ -4,20 +4,23 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@ToString
 @Entity
-@Table(name = "Employee")
+@Table(name = "Tbl_Employee")
 public class Employee {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "emp_id")
 	private long empId;
 	@Column(name = "emp_name")
@@ -28,18 +31,13 @@ public class Employee {
 	private String empDesignation;
 	@Column(name = "emp_salary")
 	private float empSalary;
+
 	@Column(name = "doj")
 	private Timestamp doj;
 
-	public Employee(CreateEmployeeRequest createRequest) {
-		this.empId = createRequest.getEmpId();
-		this.empName = createRequest.getEmpName();
-		this.empCode = createRequest.getEmpCode();
-		this.empDesignation = createRequest.getEmpDesignation();
-		this.empSalary = createRequest.getEmpSalary();
-		this.doj = createRequest.getDoj();
 
-	}
+
+
 
 
 }
