@@ -41,6 +41,10 @@ public class User {
 	@Column(name="Status")
 	private String status;
 	
+	@OneToOne
+	@JoinColumn(name="User_id")
+	private UserDetails userdetails;
+	
 	
 	@Override
 	public String toString() {
