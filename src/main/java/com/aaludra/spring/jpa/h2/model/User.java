@@ -1,5 +1,5 @@
 package com.aaludra.spring.jpa.h2.model;
-import java.security.Timestamp;
+//import java.security.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+//import com.aaludra.spring.jpa.h2.request.UserRequest;
 
 import lombok.Getter;
 
@@ -45,12 +47,14 @@ public class User {
 	@JoinColumn(name="User_id")
 	private UserDetails userdetails;
 	
-	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
 				+ ", logindetails=" + logindetails + ", status=" + status + "]";
-	}	
+	}
 
+	
+	
+	
 
 }

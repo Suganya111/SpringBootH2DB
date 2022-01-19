@@ -1,6 +1,7 @@
 package com.aaludra.spring.jpa.h2.controller;
 
 import java.util.List;
+//import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aaludra.spring.jpa.h2.model.User;
+import com.aaludra.spring.jpa.h2.model.UserDetails;
+import com.aaludra.spring.jpa.h2.repository.UserDetailsRepository;
 import com.aaludra.spring.jpa.h2.repository.UserRepository;
 //import com.aaludra.spring.jpa.h2.service.UserService;
+
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	UserDetailsRepository userDetailsRepository;
 
 	@PostMapping("/create")
 	public ResponseEntity<User> save(@RequestBody User user) {
