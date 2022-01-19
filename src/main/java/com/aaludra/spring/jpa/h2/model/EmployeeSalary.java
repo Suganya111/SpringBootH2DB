@@ -7,36 +7,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
+@Entity
+@Table(name = "tbl_employee_salary")
 @Getter
 @Setter
-@ToString
-@Entity
-@Table(name = "Tbl_Employee")
-public class Employee {
+public class EmployeeSalary {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "emp_id")
-	private long empId;
-	@Column(name = "emp_name")
-	private String empName;
-	@Column(name = "emp_code")
-	private String empCode;
-	@Column(name = "emp_designation")
-	private String empDesignation;
-
-
-	@Column(name = "doj")
-	private Timestamp doj;
-
-
-
-
-
+	@Column(name = "id")
+	private long id;
+	@Column(name = "effectiveDate")
+	private Timestamp effectiveDate;
+	@Column(name = "Salary")
+	private float salary;
+	@OneToOne
+	@JoinColumn(name = "emp_Id")
+	private Employee employee;
 
 }
