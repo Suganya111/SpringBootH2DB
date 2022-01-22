@@ -35,10 +35,12 @@ public class Employee {
 	private String empDesignation;
 
 	@Column(name = "doj")
-
 	private Timestamp doj;
+
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
 	@JsonBackReference
 	private EmployeeSalary employeeSalary;
+
+
 
 }
