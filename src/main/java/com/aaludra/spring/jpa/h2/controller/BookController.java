@@ -28,7 +28,7 @@ public class BookController {
 	BookRepository bookrepo;
 
 	@PostMapping("/create")
-	public ResponseEntity<?> createBook(@RequestBody BookinputView bookin) {
+	public ResponseEntity<BookoutputView> createBook(@RequestBody BookinputView bookin) {
 
 		BookModel bookmodel = bookin.convertBook(bookin);
 		BookDetailModel bookdetailmodel = bookin.convertBookedetail(bookin);

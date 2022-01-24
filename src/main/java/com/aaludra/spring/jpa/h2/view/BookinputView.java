@@ -1,9 +1,8 @@
 package com.aaludra.spring.jpa.h2.view;
 
-import java.sql.Date;
-
 import com.aaludra.spring.jpa.h2.model.BookDetailModel;
 import com.aaludra.spring.jpa.h2.model.BookModel;
+import com.aaludra.spring.jpa.h2.util.DateUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,7 +43,7 @@ public class BookinputView {
 		bookdetailmodel.setAuthorProfile(bookin.getAuthorprofile());
 		bookdetailmodel.setStock(Integer.parseInt(bookin.getStock()));
 		bookdetailmodel.setVersion(bookin.getVersion());
-		bookdetailmodel.setPublisheddate(Date.valueOf(bookin.getPublisheddate()));
+		bookdetailmodel.setPublisheddate(DateUtil.convertDate(bookin.getPublisheddate()));
 
 		return bookdetailmodel;
 

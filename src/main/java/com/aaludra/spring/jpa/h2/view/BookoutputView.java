@@ -50,7 +50,7 @@ public class BookoutputView {
 		bookout.setStock(String.valueOf(bm.getBookmodeldetail().getStock()));
 
 		Date date = bm.getBookmodeldetail().getPublisheddate();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd ");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String strDate = dateFormat.format(date);
 		this.setPublisheddate(strDate);
 		bookout.setPublisheddate(strDate);

@@ -5,8 +5,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class DateUtil {
-	public static Timestamp convertStringToTimestamp(String input) {
-		DateFormat formatter = new SimpleDateFormat("yyyy-dd-mm");
+	public static Timestamp convertDate(String input) {
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
 			java.util.Date date;
