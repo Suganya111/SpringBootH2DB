@@ -2,6 +2,7 @@ package com.aaludra.spring.jpa.h2.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,11 +25,16 @@ public class EmployeeSalary {
 	@Column(name = "id")
 	private long id;
 	@Column(name = "effectiveDate")
+
 	private Timestamp effectiveDate;
 	@Column(name = "Salary")
 	private float salary;
-	@OneToOne
-	@JoinColumn(name = "emp_Id")
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "emp_id")
 	private Employee employee;
 
+
+
+	
 }

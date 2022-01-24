@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aaludra.spring.jpa.h2.model.Employee;
+import com.aaludra.spring.jpa.h2.model.EmployeeSalary;
 import com.aaludra.spring.jpa.h2.repository.EmployeeRepository;
+import com.aaludra.spring.jpa.h2.view.EmployeeInputView;
+import com.aaludra.spring.jpa.h2.view.EmployeeOutputView;
 
 @RestController
 @RequestMapping("/api/Employee")
@@ -26,9 +29,39 @@ public class EmployeeController {
 	EmployeeRepository empRepo;
 
 	@PostMapping("/create")
-	public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+	public ResponseEntity<?> createEmployee(@RequestBody EmployeeInputView inView) {
 		try {
-			return new ResponseEntity<>(empRepo.save(employee), HttpStatus.CREATED);
+
+
+			Employee employee = new Employee();
+
+
+			employee = inView.buildInEmployee(inView);
+
+
+			EmployeeSalary eSalary = new EmployeeSalary();
+			eSalary = inView.buildInEmployeeSalary(inView);
+			eSalary.setEmployee(employee);
+			employee.setEmployeeSalary(eSalary);
+
+			Employee emp = empRepo.save(employee);
+
+			EmployeeOutputView outView = inView.buildOutEmployee(emp);
+			return new ResponseEntity<>(outView, HttpStatus.CREATED);
+
+//			Employee emp = new Employee();
+//			EmployeeSalary eSalary = new EmployeeSalary(eRequest);
+//			emp.setEmpCode(eRequest.getEmpCode());
+//
+//			emp.setEmpName(eRequest.getEmpName());
+//			emp.setEmpDesignation(eRequest.getEmpDesignation());
+//			emp.setDoj(eRequest.getEffectiveDate());
+//			eSalary.setEmployee(emp);
+//			emp.setEmployeeSalary(eSalary);
+//			empRepo.save(emp);
+//			return new ResponseEntity<EmployeeSalary>(eSalary, HttpStatus.CREATED);
+
+
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -77,17 +110,15 @@ public class EmployeeController {
 	public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable long id) {
 		try {
 			empRepo.deleteById(id);
-			
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			
-			catch (Exception e)
+
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+
+		catch (Exception e)
 
 		{
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		}
-
-
+	}
 
 }
