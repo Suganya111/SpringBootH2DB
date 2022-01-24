@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aaludra.spring.jpa.h2.model.BookDetailModel;
 import com.aaludra.spring.jpa.h2.model.BookModel;
 import com.aaludra.spring.jpa.h2.repository.BookRepository;
+import com.aaludra.spring.jpa.h2.view.BookinputView;
+import com.aaludra.spring.jpa.h2.view.BookoutputView;
 
 @RestController
 @RequestMapping("/books")
@@ -25,13 +28,17 @@ public class BookController {
 	BookRepository bookrepo;
 
 	@PostMapping("/create")
-	public ResponseEntity<BookModel> createBook(@RequestBody BookModel book) {
-		try {
-			return new ResponseEntity<>(bookrepo.save(book), HttpStatus.CREATED);
+	public ResponseEntity<?> createBook(@RequestBody BookinputView bookin) {
 
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		BookModel bookmodel = bookin.convertBook(bookin);
+		BookDetailModel bookdetailmodel = bookin.convertBookedetail(bookin);
+
+		bookdetailmodel.setBookmodel(bookmodel);
+		bookmodel.setBookmodeldetail(bookdetailmodel);
+
+		BookoutputView bookout = new BookoutputView();
+		bookout = bookout.reconvertBook(bookrepo.save(bookmodel));
+		return new ResponseEntity<>(bookout, HttpStatus.CREATED);
 
 	}
 
@@ -65,7 +72,7 @@ public class BookController {
 
 		if (book1.isPresent()) {
 			BookModel bm = book1.get();
-			bm.setName(book.getName());
+			bm.setBookname(book.getBookname());
 			bm.setAuthor(book.getAuthor());
 			bm.setDescription(book.getDescription());
 			bm.setCatagory(book.getCatagory());
