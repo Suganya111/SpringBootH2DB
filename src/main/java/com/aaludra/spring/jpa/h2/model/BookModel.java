@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,10 +43,10 @@ public class BookModel {
 	private String catagory;
 
 	@Column(name = "Price")
-	private int price;
+	private double price;
 
-	@CreationTimestamp
 	@Column(name = "Uploades_Date")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date uploadeddate;
 
 	@OneToOne(mappedBy = "bookmodel", cascade = CascadeType.ALL)

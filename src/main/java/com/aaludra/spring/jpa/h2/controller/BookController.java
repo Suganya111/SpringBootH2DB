@@ -1,7 +1,6 @@
 package com.aaludra.spring.jpa.h2.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,85 +14,61 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aaludra.spring.jpa.h2.model.BookDetailModel;
-import com.aaludra.spring.jpa.h2.model.BookModel;
-import com.aaludra.spring.jpa.h2.repository.BookRepository;
+import com.aaludra.spring.jpa.h2.service.BookService;
 import com.aaludra.spring.jpa.h2.view.BookinputView;
 import com.aaludra.spring.jpa.h2.view.BookoutputView;
 
 @RestController
 @RequestMapping("/books")
 public class BookController {
+
 	@Autowired
-	BookRepository bookrepo;
+	BookService bookserve;
 
 	@PostMapping("/create")
 	public ResponseEntity<BookoutputView> createBook(@RequestBody BookinputView bookin) {
 
-		BookModel bookmodel = bookin.convertBook(bookin);
-		BookDetailModel bookdetailmodel = bookin.convertBookedetail(bookin);
-
-		bookdetailmodel.setBookmodel(bookmodel);
-		bookmodel.setBookmodeldetail(bookdetailmodel);
-
-		BookoutputView bookout = new BookoutputView();
-		bookout = bookout.reconvertBook(bookrepo.save(bookmodel));
-		return new ResponseEntity<>(bookout, HttpStatus.CREATED);
+		return new ResponseEntity<>(bookserve.createbook(bookin), HttpStatus.CREATED);
 
 	}
 
 	@GetMapping("/get/list")
-	public ResponseEntity<List<BookModel>> getAllbooks() {
-		List<BookModel> list = bookrepo.findAll();
+	public ResponseEntity<List<BookoutputView>> getAllbooks() {
+
+		List<BookoutputView> bookoutArr = bookserve.getAllbooks();
+		if (bookoutArr.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(bookoutArr, HttpStatus.OK);
+	}
+
+	@GetMapping("/getbook/{bookid}")
+	public ResponseEntity<BookoutputView> getBookByid(@PathVariable long bookid) {
+
+		return new ResponseEntity<>(bookserve.getBookbyId(bookid), HttpStatus.OK);
+
+	}
+
+	@PutMapping("/update/{bookid}")
+	public ResponseEntity<BookoutputView> updateBook(@PathVariable long bookid, @RequestBody BookinputView bookin) {
 		try {
-			if (list.isEmpty() || list.size() == 0) {
-				return new ResponseEntity<List<BookModel>>(HttpStatus.NO_CONTENT);
+
+			BookoutputView bookout = bookserve.updateBook(bookid, bookin);
+			if (bookout != null) {
+				return new ResponseEntity<>(bookout, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 			}
-			return new ResponseEntity<>(list, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
+			return null;
 		}
 	}
 
-	@GetMapping("/getid/{id}")
-	public ResponseEntity<BookModel> getBookByid(@PathVariable long id) {
-		Optional<BookModel> book = bookrepo.findById(id);
-		if (book.isPresent()) {
-			return new ResponseEntity<BookModel>(book.get(), HttpStatus.OK);
-		}
-		return new ResponseEntity<BookModel>(HttpStatus.NOT_FOUND);
+	@DeleteMapping("/delete/{bookid}")
+	public ResponseEntity<HttpStatus> deleteBook(@PathVariable long bookid) {
+		bookserve.deleteBook(bookid);
 
-	}
-
-	@PutMapping("/update/{id}")
-	public ResponseEntity<BookModel> updateBook(@PathVariable long id, @RequestBody BookModel book) {
-		Optional<BookModel> book1 = bookrepo.findById(id);
-
-		if (book1.isPresent()) {
-			BookModel bm = book1.get();
-			bm.setBookname(book.getBookname());
-			bm.setAuthor(book.getAuthor());
-			bm.setDescription(book.getDescription());
-			bm.setCatagory(book.getCatagory());
-
-			return new ResponseEntity<BookModel>(bookrepo.save(bm), HttpStatus.OK);
-
-		} else {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<BookModel> deleteBook(@PathVariable long id) {
-
-		try {
-			bookrepo.deleteById(id);
-			return new ResponseEntity<BookModel>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<BookModel>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

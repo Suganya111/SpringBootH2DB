@@ -2,13 +2,11 @@ package com.aaludra.spring.jpa.h2.view;
 
 import com.aaludra.spring.jpa.h2.model.Employee;
 import com.aaludra.spring.jpa.h2.model.EmployeeSalary;
-import com.aaludra.spring.jpa.h2.util.DateUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Getter
 @Setter
@@ -29,7 +27,7 @@ public class EmployeeInputView {
 		employee.setEmpName(inView.getEmpName());
 		employee.setEmpCode(inView.getEmpCode());
 		employee.setEmpDesignation(inView.getEmpDesignation());
-		employee.setDoj(DateUtil.convertStringToTimestamp(inView.getEffectiveDate()));
+		// employee.setDoj(DateUtil.convertStringToTimestamp(inView.getEffectiveDate()));
 
 		return employee;
 	}
@@ -37,7 +35,7 @@ public class EmployeeInputView {
 	public EmployeeSalary buildInEmployeeSalary(EmployeeInputView inView) {
 		EmployeeSalary eSalary = new EmployeeSalary();
 		eSalary.setSalary(Float.parseFloat(inView.getSalary()));
-		eSalary.setEffectiveDate(DateUtil.convertStringToTimestamp(inView.getEffectiveDate()));
+		// eSalary.setEffectiveDate(DateUtil.convertStringToTimestamp(inView.getEffectiveDate()));
 
 		return eSalary;
 	}
@@ -53,8 +51,6 @@ public class EmployeeInputView {
 		outView.setSalary(Float.toString(employee.getEmployeeSalary().getSalary()));
 		outView.setEffectiveDate(employee.getEmployeeSalary().getEffectiveDate().toString());
 		outView.setDoj(employee.getEmployeeSalary().getEffectiveDate().toString());
-
-
 
 		return outView;
 	}

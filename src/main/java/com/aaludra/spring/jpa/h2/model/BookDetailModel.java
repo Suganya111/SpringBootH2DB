@@ -42,7 +42,7 @@ public class BookDetailModel {
 	private int stock;
 
 	@Column(name = "Published_Date")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyyMMdd")
 	private Date publisheddate;
 
 	@JoinColumn(name = "book_id")
