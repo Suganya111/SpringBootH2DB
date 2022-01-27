@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aaludra.spring.jpa.h2.model.Employee;
-import com.aaludra.spring.jpa.h2.model.EmployeeSalary;
-import com.aaludra.spring.jpa.h2.repository.EmployeeRepository;
+import com.aaludra.spring.jpa.h2.service.EmployeeService;
 import com.aaludra.spring.jpa.h2.view.EmployeeInputView;
 import com.aaludra.spring.jpa.h2.view.EmployeeOutputView;
 
@@ -26,40 +24,14 @@ import com.aaludra.spring.jpa.h2.view.EmployeeOutputView;
 public class EmployeeController {
 
 	@Autowired
-	EmployeeRepository empRepo;
+	EmployeeService empService;
 
 	@PostMapping("/create")
 	public ResponseEntity<?> createEmployee(@RequestBody EmployeeInputView inView) {
 		try {
 
-
-			Employee employee = new Employee();
-
-
-			employee = inView.buildInEmployee(inView);
-
-
-			EmployeeSalary eSalary = new EmployeeSalary();
-			eSalary = inView.buildInEmployeeSalary(inView);
-			eSalary.setEmployee(employee);
-			employee.setEmployeeSalary(eSalary);
-
-			Employee emp = empRepo.save(employee);
-
-			EmployeeOutputView outView = inView.buildOutEmployee(emp);
+			EmployeeOutputView outView = empService.create(inView);
 			return new ResponseEntity<>(outView, HttpStatus.CREATED);
-
-//			Employee emp = new Employee();
-//			EmployeeSalary eSalary = new EmployeeSalary(eRequest);
-//			emp.setEmpCode(eRequest.getEmpCode());
-//
-//			emp.setEmpName(eRequest.getEmpName());
-//			emp.setEmpDesignation(eRequest.getEmpDesignation());
-//			emp.setDoj(eRequest.getEffectiveDate());
-//			eSalary.setEmployee(emp);
-//			emp.setEmployeeSalary(eSalary);
-//			empRepo.save(emp);
-//			return new ResponseEntity<EmployeeSalary>(eSalary, HttpStatus.CREATED);
 
 
 		} catch (Exception e) {
@@ -67,51 +39,49 @@ public class EmployeeController {
 		}
 	}
 
+
 	@GetMapping("/getAll")
-	public ResponseEntity<List<Employee>> getAllEmployee() {
+	public ResponseEntity<List<EmployeeOutputView>> getAllEmployee() {
 		try {
-			List<Employee> list = empRepo.findAll();
-			if (list.isEmpty() || list.size() == 0) {
-				return new ResponseEntity<List<Employee>>(HttpStatus.NO_CONTENT);
+			List<EmployeeOutputView> employeeOut = empService.getAllEmployee();
+			if (employeeOut.isEmpty()) {
+				return new ResponseEntity<>(employeeOut, HttpStatus.NO_CONTENT);
 			}
-			return new ResponseEntity<List<Employee>>(list, HttpStatus.OK);
+			return new ResponseEntity<>(employeeOut, HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping("/get/{id}")
-	public ResponseEntity<Employee> get(@PathVariable Long id) {
-		Optional<Employee> employee = empRepo.findById(id);
-		if (employee.isPresent()) {
-			return new ResponseEntity<>(employee.get(), HttpStatus.OK);
+	public ResponseEntity<EmployeeOutputView> get(@PathVariable Long id) {
+		Optional<EmployeeOutputView> outView = empService.getEmployeeById(id);
+		if (outView.isPresent()) {
+			return new ResponseEntity<>(outView.get(), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@PutMapping("/update/{id}")
-	public ResponseEntity<Employee> updateEmployee(@PathVariable("id") long id, @RequestBody Employee employee) {
-		Optional<Employee> employeeData = empRepo.findById(id);
 
-		if (employeeData.isPresent()) {
-			Employee emp = employeeData.get();
-			emp.setEmpName(employee.getEmpName());
-			emp.setEmpCode(employee.getEmpCode());
-			emp.setEmpDesignation(employee.getEmpDesignation());
-			emp.setDoj(employee.getDoj());
-			return new ResponseEntity<>(empRepo.save(emp), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	@PutMapping("/update/{id}")
+	public ResponseEntity<EmployeeOutputView> updateEmployee(@PathVariable("id") long id,
+			@RequestBody EmployeeInputView inView) {
+		try {
+			EmployeeOutputView outView = empService.updateEmployee(id, inView);
+
+			return new ResponseEntity<>(outView, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable long id) {
 		try {
-			empRepo.deleteById(id);
+			empService.deleteById(id);
 
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 
 		catch (Exception e)

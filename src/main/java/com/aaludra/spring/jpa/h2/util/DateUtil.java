@@ -1,23 +1,31 @@
 package com.aaludra.spring.jpa.h2.util;
 
-import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DateUtil {
-	public static Timestamp convertStringToTimestamp(String input) {
-		DateFormat formatter = new SimpleDateFormat("yyyy-dd-mm");
+	public static Date convertStringToDate(String input) {
+		DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 
 		try {
-			java.util.Date date;
+			Date date;
 			date = formatter.parse(input);
 
-			return new Timestamp(date.getTime());
+			return new Date(date.getTime());
 		} catch (Exception e) {
 
-			e.printStackTrace();
+
 			return null;
 		}
+
+	}
+
+	public static String convertFloatToString(float input) {
+		DecimalFormat formatter = new DecimalFormat("##,###.##");
+		return formatter.format(input);
+
 
 	}
 }

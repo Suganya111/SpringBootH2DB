@@ -1,6 +1,6 @@
 package com.aaludra.spring.jpa.h2.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +24,7 @@ import lombok.ToString;
 @Table(name = "Tbl_Employee")
 public class Employee {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long empId;
 	@Column(name = "emp_name")
@@ -35,7 +35,7 @@ public class Employee {
 	private String empDesignation;
 
 	@Column(name = "doj")
-	private Timestamp doj;
+	private Date doj;
 
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
 	@JsonBackReference
