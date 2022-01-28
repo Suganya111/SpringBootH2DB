@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.aaludra.spring.jpa.h2.enumPackage.DesignationEnum;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class Employee {
 	private String empCode;
 	@Column(name = "emp_designation")
 	private String empDesignation;
-	private EmployeeDesignationEnum desEnum;
+	private DesignationEnum desEnum;
 
 	@Column(name = "doj")
 	private Date doj;

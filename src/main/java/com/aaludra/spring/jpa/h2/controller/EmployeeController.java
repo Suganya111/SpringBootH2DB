@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aaludra.spring.jpa.h2.exception.ValidationException;
 import com.aaludra.spring.jpa.h2.service.EmployeeService;
+import com.aaludra.spring.jpa.h2.validation.EmployeeValidation;
+import com.aaludra.spring.jpa.h2.validation.ErrorMessages;
 import com.aaludra.spring.jpa.h2.view.EmployeeInputView;
 import com.aaludra.spring.jpa.h2.view.EmployeeOutputView;
 
@@ -26,15 +29,19 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService empService;
 
+
 	@PostMapping("/create")
 	public ResponseEntity<?> createEmployee(@RequestBody EmployeeInputView inView) {
 		try {
-
+			EmployeeValidation eValidate = new EmployeeValidation();
+			eValidate.validate(inView);
 			EmployeeOutputView outView = empService.create(inView);
 			return new ResponseEntity<>(outView, HttpStatus.CREATED);
-
-
+		} catch (ValidationException ve) {
+			return new ResponseEntity<>(new ErrorMessages(HttpStatus.BAD_REQUEST.value(), ve.getMessage()),
+					HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
