@@ -33,6 +33,7 @@ public class Employee {
 	private String empCode;
 	@Column(name = "emp_designation")
 	private String empDesignation;
+	private EmployeeDesignationEnum desEnum;
 
 	@Column(name = "doj")
 	private Date doj;
