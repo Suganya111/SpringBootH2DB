@@ -46,7 +46,7 @@ public class BookModel {
 	private double price;
 
 	@Column(name = "Uploades_Date")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyyMMdd")
 	private Date uploadeddate;
 
 	@OneToOne(mappedBy = "bookmodel", cascade = CascadeType.ALL)

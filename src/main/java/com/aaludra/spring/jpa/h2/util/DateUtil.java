@@ -6,25 +6,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtil {
-
-	public static Date convertDate(String input) {
+	public static Date convertStringToDate(String input) {
 		DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 
 		try {
-			Date date;
+			java.util.Date date;
 			date = formatter.parse(input);
 
 			return new Date(date.getTime());
 		} catch (Exception e) {
 
-			e.printStackTrace();
 			return null;
 		}
 
 	}
 
 	public static String doubleTocorrency(double value) {
-		DecimalFormat df = new DecimalFormat("#,##,##,###.00");
+		DecimalFormat df = new DecimalFormat("###,###.##");
 		return df.format(value);
 	}
 }

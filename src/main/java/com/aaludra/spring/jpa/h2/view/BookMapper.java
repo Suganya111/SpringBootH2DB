@@ -17,7 +17,7 @@ public class BookMapper {
 		bookmodel.setCatagory(bookin.getCatagory());
 		bookmodel.setDescription(bookin.getDescription());
 		bookmodel.setPrice(Double.parseDouble(bookin.getPrice()));
-		bookmodel.setUploadeddate(DateUtil.convertDate(bookin.getUploadeddate()));
+		bookmodel.setUploadeddate(DateUtil.convertStringToDate(bookin.getUploadeddate()));
 
 		return bookmodel;
 
@@ -28,7 +28,7 @@ public class BookMapper {
 		bookdetailmodel.setAuthorProfile(bookin.getAuthorprofile());
 		bookdetailmodel.setStock(Integer.parseInt(bookin.getStock()));
 		bookdetailmodel.setVersion(bookin.getVersion());
-		bookdetailmodel.setPublisheddate(DateUtil.convertDate(bookin.getPublisheddate()));
+		bookdetailmodel.setPublisheddate(DateUtil.convertStringToDate(bookin.getPublisheddate()));
 
 		return bookdetailmodel;
 
