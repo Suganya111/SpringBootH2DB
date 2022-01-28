@@ -8,4 +8,6 @@ import com.aaludra.spring.jpa.h2.model.BookModel;
 @Repository
 public interface BookRepository extends JpaRepository<BookModel, Long> {
 
+	// BookDetailModel save(BookDetailModel bdmodel);
+
 }

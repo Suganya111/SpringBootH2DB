@@ -2,32 +2,36 @@ package com.aaludra.spring.jpa.h2.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Table(name = "tbl_book")
 @Entity
 @Getter
 @Setter
-@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Id")
-	private long id;
+	@Column(name = "book_id")
+	private long bookid;
 
-	@Column(name = "Name")
-	private String name;
+	@Column(name = "Book_Name")
+	private String bookname;
 
 	@Column(name = "Author")
 	private String author;
@@ -39,10 +43,13 @@ public class BookModel {
 	private String catagory;
 
 	@Column(name = "Price")
-	private int price;
+	private double price;
 
-	@CreationTimestamp
-	@Column(name = "Date")
-	private Date date;
+	@Column(name = "Uploades_Date")
+	@JsonFormat(pattern = "yyyyMMdd")
+	private Date uploadeddate;
+
+	@OneToOne(mappedBy = "bookmodel", cascade = CascadeType.ALL)
+	private BookDetailModel bookmodeldetail;
 
 }

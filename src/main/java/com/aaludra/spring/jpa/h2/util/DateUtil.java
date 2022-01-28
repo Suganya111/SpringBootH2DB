@@ -25,7 +25,11 @@ public class DateUtil {
 	public static String convertFloatToString(float input) {
 		DecimalFormat formatter = new DecimalFormat("##,###.##");
 		return formatter.format(input);
+	}
 
+	public static String doubleTocorrency(double value) {
+		DecimalFormat df = new DecimalFormat("###,###.##");
+		return df.format(value);
 
 	}
 }

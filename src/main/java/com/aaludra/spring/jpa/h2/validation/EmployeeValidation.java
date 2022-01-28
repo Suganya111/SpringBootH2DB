@@ -3,12 +3,11 @@ package com.aaludra.spring.jpa.h2.validation;
 import com.aaludra.spring.jpa.h2.enumPackage.DesignationEnum;
 import com.aaludra.spring.jpa.h2.exception.ValidationException;
 import com.aaludra.spring.jpa.h2.view.EmployeeInputView;
-import com.aaludra.spring.jpa.h2.view.EmployeeOutputView;
 
 public class EmployeeValidation {
 
 	public void validate(EmployeeInputView inView) throws ValidationException {
-		EmployeeOutputView outView = new EmployeeOutputView();
+		
 		if (inView.getEmpName() == null) {
 
 			throw new ValidationException("Employee Name is mandatory");
@@ -37,10 +36,12 @@ public class EmployeeValidation {
 			throw new ValidationException("Invalid salary");
 		}
 
+
 		DesignationEnum de = DesignationEnum.check(inView.getEmpDesignation());
 		if (de == null) {
 			throw new ValidationException("Invalid Designation");
 		}
+		
 
 	}
 }

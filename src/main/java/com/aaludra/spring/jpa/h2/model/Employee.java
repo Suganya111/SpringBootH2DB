@@ -30,6 +30,7 @@ public class Employee {
 	private long empId;
 	@Column(name = "emp_name")
 	private String empName;
+	// @Pattern("/^[A-Z]{2}[0-9]{4}")
 	@Column(name = "emp_code")
 	private String empCode;
 	@Column(name = "emp_designation")
